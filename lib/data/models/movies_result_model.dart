@@ -1,23 +1,23 @@
 import 'package:filmood/data/models/movie_model.dart';
 
 class MovieResultModel {
-  List<MovieModel>? results;
+  List<MovieModel>? movies;
 
-  MovieResultModel({this.results});
+  MovieResultModel({this.movies});
 
   MovieResultModel.fromJson(Map<String, dynamic> json) {
-    if (json['results'] != null) {
-      results = <MovieModel>[];
-      json['results'].forEach((v) {
-        results!.add(MovieModel.fromJson(v));
+    if (json['movies'] != null) {
+      movies = <MovieModel>[];
+      json['movies'].forEach((v) {
+        movies!.add(MovieModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data =<String, dynamic>{};
-    if (results != null) {
-      data['results'] =results!.map((v) => v.toJson()).toList();
+    if (movies != null) {
+      data['movies'] =movies!.map((v) => v.toJson()).toList();
     }
     return data;
   }
