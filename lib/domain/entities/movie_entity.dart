@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class MovieEntity extends Equatable{
   final String? posterPath;
-  final String? backgroundPath;
+  final String? backdropPath;
   final String title;
   final String overview;
   final String releaseDate;
@@ -11,7 +11,7 @@ class MovieEntity extends Equatable{
   
   const MovieEntity({
     required this.posterPath,
-    required this.backgroundPath,
+    required this.backdropPath,
     required this.title,
     required this.overview,
     required this.releaseDate,
@@ -21,7 +21,7 @@ class MovieEntity extends Equatable{
 
   @override
   @override
-  List<Object?> get props => [posterPath, backgroundPath, title, overview, releaseDate, voteAverage, id];
+  List<Object?> get props => [posterPath, backdropPath, title, overview, releaseDate, voteAverage, id];
 
 
    @override

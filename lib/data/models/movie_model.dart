@@ -1,39 +1,40 @@
 import 'package:filmood/domain/entities/movie_entity.dart';
 
 class MovieModel extends MovieEntity {
-  final String? backdropPath;
-  final int id;
-  final String title;
   final String? originalTitle;
-  final String overview;
-  final String posterPath;
   final String? mediaType;
   final bool? adult;
   final String? originalLanguage;
   final List<int>? genreIds;
   final double? popularity;
-  final String releaseDate;
   final bool? video;
-  final double voteAverage;
   final int? voteCount;
 
   MovieModel({
     required String posterPath,
     required String backdropPath,
-    required this.id,
-    required this.title,
+     required int id,
+    required String title,
+    required String overview,
+    required String releaseDate,
+    required double voteAverage,
     this.originalTitle,
-    this.overview,
     this.mediaType,
     this.adult,
     this.originalLanguage,
     this.genreIds,
     this.popularity,
-    this.releaseDate,
     this.video,
-    this.voteAverage,
     this.voteCount,
-  }) : super(posterPath: posterPath, title: title, overview: overview, releaseDate: releaseDate, voteAverage: voteAverage, id: id);
+  }) : super(
+          posterPath: posterPath,
+          backdropPath: backdropPath,
+          title: title,
+          overview: overview,
+          releaseDate: releaseDate,
+          voteAverage: voteAverage,
+          id: id,
+        );
 
   factory MovieModel.fromJson(Map<String, dynamic> json) {
     return MovieModel(
@@ -47,31 +48,31 @@ class MovieModel extends MovieEntity {
       adult: json['adult'],
       originalLanguage: json['original_language'],
       genreIds: json['genre_ids']?.cast<int>(),
-      popularity: json['popularity'],
+      popularity: json['popularity']?.toDouble()??0.0,//if api return null it will be 0.0
       releaseDate: json['release_date'],
       video: json['video'],
-      voteAverage: json['vote_average'],
+      voteAverage: json['vote_average']?.toDouble()??0.0,
       voteCount: json['vote_count'],
     );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['backdrop_path'] = backdropPath;
-    data['id'] = id;
-    data['title'] = title;
-    data['original_title'] = originalTitle;
-    data['overview'] = overview;
-    data['poster_path'] = posterPath;
-    data['media_type'] = mediaType;
-    data['adult'] = adult;
-    data['original_language'] = originalLanguage;
-    data['genre_ids'] = genreIds;
-    data['popularity'] = popularity;
-    data['release_date'] = releaseDate;
-    data['video'] = video;
-    data['vote_average'] = voteAverage;
-    data['vote_count'] = voteCount;
-    return data;
+    return {
+      'backdrop_path': backdropPath,
+      'id': id,
+      'title': title,
+      'original_title': originalTitle,
+      'overview': overview,
+      'poster_path': posterPath,
+      'media_type': mediaType,
+      'adult': adult,
+      'original_language': originalLanguage,
+      'genre_ids': genreIds,
+      'popularity': popularity,
+      'release_date': releaseDate,
+      'video': video,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
+    };
   }
 }
