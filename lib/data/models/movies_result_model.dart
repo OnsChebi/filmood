@@ -6,9 +6,9 @@ class MovieResultModel {
   MovieResultModel({this.movies});
 
   MovieResultModel.fromJson(Map<String, dynamic> json) {
-    if (json['movies'] != null) {
+    if (json['results'] != null) {
       movies = <MovieModel>[];
-      json['movies'].forEach((v) {
+      json['results'].forEach((v) {
         movies!.add(MovieModel.fromJson(v));
       });
     }
@@ -17,7 +17,7 @@ class MovieResultModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data =<String, dynamic>{};
     if (movies != null) {
-      data['movies'] =movies!.map((v) => v.toJson()).toList();
+      data['results'] =movies!.map((v) => v.toJson()).toList();
     }
     return data;
   }

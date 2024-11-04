@@ -5,7 +5,8 @@ import 'package:filmood/data/models/movies_result_model.dart';
 import 'package:http/http.dart' as http;
 
 abstract class MovieRemoteDataSource {
-  Future<List<MovieModel>> getTrending(); //to call TMDB API for trending movies
+  Future<List<MovieModel>> getTrending();
+  Future<List<MovieModel>> getPoular(); // Call TMDB API for trending movies
 }
 
 class MovieRemoteDataSourceImp implements MovieRemoteDataSource {
@@ -23,11 +24,28 @@ class MovieRemoteDataSourceImp implements MovieRemoteDataSource {
     );
 
     if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body); // Decodes JSON response
+      final jsonResponse = json.decode(response.body); // Decode JSON response
       final movies = MovieResultModel.fromJson(jsonResponse).movies;
       return movies ?? [];
     } else {
-      throw Exception('Failed to load trending movies');
+      throw http.ClientException('Failed to load trending movies: ${response.statusCode}');
+    }
+  }
+  @override
+  Future<List<MovieModel>> getPoular() async {
+    final response = await _client.get(
+      Uri.parse('${ApiConstants.BASE_URL}movie/popular?api_key=${ApiConstants.API_KEY}'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body); // Decode JSON response
+      final movies = MovieResultModel.fromJson(jsonResponse).movies;
+      return movies ?? [];
+    } else {
+      throw http.ClientException('Failed to load trending movies: ${response.statusCode}');
     }
   }
 }

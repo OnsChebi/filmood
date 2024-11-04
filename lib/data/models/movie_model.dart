@@ -10,7 +10,7 @@ class MovieModel extends MovieEntity {
   final bool? video;
   final int? voteCount;
 
-  MovieModel({
+  const MovieModel({
     required String posterPath,
     required String backdropPath,
      required int id,
@@ -38,21 +38,21 @@ class MovieModel extends MovieEntity {
 
   factory MovieModel.fromJson(Map<String, dynamic> json) {
     return MovieModel(
-      backdropPath: json['backdrop_path'],
+      backdropPath: json['backdrop_path'] ?? '',
       id: json['id'],
-      title: json['title'],
+      title: json['title'] ?? 'No Title',
       originalTitle: json['original_title'],
-      overview: json['overview'],
+      overview: json['overview']?? 'No Overview',
       posterPath: json['poster_path'],
       mediaType: json['media_type'],
       adult: json['adult'],
       originalLanguage: json['original_language'],
-      genreIds: json['genre_ids']?.cast<int>(),
+      genreIds: json['genre_ids']?.cast<int>() ?? [],
       popularity: json['popularity']?.toDouble()??0.0,//if api return null it will be 0.0
-      releaseDate: json['release_date'],
+      releaseDate: json['release_date']?? 'Unknown',
       video: json['video'],
       voteAverage: json['vote_average']?.toDouble()??0.0,
-      voteCount: json['vote_count'],
+      voteCount: json['vote_count']?? 0,
     );
   }
 
