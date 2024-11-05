@@ -1,5 +1,6 @@
 import 'package:filmood/data/data_sources/movie_remote.dart';
 import 'package:filmood/data/models/movie_model.dart';
+import 'package:filmood/domain/entities/movie_entity.dart';
 import 'package:filmood/domain/repoitories/movie_repository.dart';
 
 class MovieRepositoryImp extends MovieRepository{
@@ -18,4 +19,37 @@ class MovieRepositoryImp extends MovieRepository{
       return [];
       }
     }
+
+  @override
+  Future<List<MovieEntity>> getComingSoon()async {
+ try{
+      final movies = await remoteDataSource.getComingSoon();
+      return movies;
+    }on Exception catch(e){
+      print("error fetching trending movies $e");
+      return [];
+      } 
+  }
+
+  @override
+  Future<List<MovieEntity>> getPlayNow()async {
+ try{
+      final movies = await remoteDataSource.getPlayingNow();
+      return movies;
+    }on Exception catch(e){
+      print("error fetching trending movies $e");
+      return [];
+      } 
+  }
+
+  @override
+  Future<List<MovieEntity>> getPopular() async{
+ try{
+      final movies = await remoteDataSource.getPopular();
+      return movies;
+    }on Exception catch(e){
+      print("error fetching trending movies $e");
+      return [];
+      } 
+  }
 }

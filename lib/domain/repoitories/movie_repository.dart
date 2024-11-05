@@ -1,5 +1,9 @@
-import 'package:filmood/data/models/movie_model.dart';
+import 'package:filmood/domain/entities/movie_entity.dart';
 
 abstract class MovieRepository {
-  Future<List<MovieModel>> getTrending();
+  Future<List<MovieEntity>> getTrending();
+  Future<List<MovieEntity>> getPopular();
+  Future<List<MovieEntity>> getComingSoon();
+  Future<List<MovieEntity>> getPlayNow();
+
 }
