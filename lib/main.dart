@@ -1,6 +1,8 @@
 import 'package:filmood/data/core/api_client.dart';
 import 'package:filmood/data/data_sources/movie_remote.dart';
 import 'package:filmood/data/models/movie_model.dart';
+import 'package:filmood/data/repositories/movie_repository_imp.dart';
+import 'package:filmood/domain/repoitories/movie_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -32,7 +34,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late MovieRemoteDataSource dataSource;
+  late MovieRepository _movieRepository; // Use the MovieRepository type
   List<MovieModel> _movies = [];
   bool _isLoading = true;
   String _error = '';
@@ -40,97 +42,31 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    dataSource = MovieRemoteDataSourceImp(ApiClient(Client()));
-    _fetchTrendingMovies();
-    _fetchPopularMovies();
-    _fetchComingSoonMovies();
-    _fetchPlayingNowMovies();
+    final dataSource = MovieRemoteDataSourceImp(ApiClient(Client())); // Initialize the remote data source
+    _movieRepository = MovieRepositoryImp(dataSource); // Initialize the repository
+    _fetchTrendingMovies();//caling the method to fetch the movies
   }
 
   Future<void> _fetchTrendingMovies() async {
-  try {
-    final movies = await dataSource.getTrending();
-    // Log the movies to the console
-    print('Trending Movies:');
-    for (var movie in movies) {
-      print('Title: ${movie.title}, Release Date: ${movie.releaseDate}');
+    try {
+      final movies = await _movieRepository.getTrending(); // Fetch movies using the repository
+      // Log the movies to the console
+      print('Trending Movies:');
+      for (var movie in movies) {
+        print('ID:${movie.id} ,Title: ${movie.title}, Release Date: ${movie.releaseDate}');
+      }
+      setState(() {
+        _movies = movies; // Update the state with the fetched movies
+        _isLoading = false; // Set loading to false
+      });
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load trending movies: $e'; // Update error state
+        _isLoading = false; // Set loading to false
+      });
+      print('Error fetching movies: $e'); // Log the error
     }
-    setState(() {
-      _movies = movies;  // Update the state with the fetched movies
-      _isLoading = false; // Set loading to false
-    });
-  } catch (e) {
-    setState(() {
-      _error = 'Failed to load trending movies: $e'; // Update error state
-      _isLoading = false; // Set loading to false
-    });
-    print('Error fetching movies: $e'); // Log the error
   }
-}
-
-Future<void> _fetchPopularMovies() async {
-  try {
-    final movies = await dataSource.getPopular();
-    // Log the movies to the console
-    print('Popular Movies:');
-    for (var movie in movies) {
-      print('Title: ${movie.title}, Release Date: ${movie.releaseDate}');
-    }
-    setState(() {
-      _movies = movies;  // Update the state with the fetched movies
-      _isLoading = false; // Set loading to false
-    });
-  } catch (e) {
-    setState(() {
-      _error = 'Failed to load popular movies: $e'; // Update error state
-      _isLoading = false; // Set loading to false
-    });
-    print('Error fetching movies: $e'); // Log the error
-  }
-}
-
-Future<void> _fetchComingSoonMovies() async {
-  try {
-    final movies = await dataSource.getComingSoon();
-    // Log the movies to the console
-    print('Coming Movies:');
-    for (var movie in movies) {
-      print('Title: ${movie.title}, Release Date: ${movie.releaseDate}');
-    }
-    setState(() {
-      _movies = movies;  // Update the state with the fetched movies
-      _isLoading = false; // Set loading to false
-    });
-  } catch (e) {
-    setState(() {
-      _error = 'Failed to load coming movies: $e'; // Update error state
-      _isLoading = false; // Set loading to false
-    });
-    print('Error fetching movies: $e'); // Log the error
-  }
-}
-
-Future<void> _fetchPlayingNowMovies() async {
-  try {
-    final movies = await dataSource.getPlayingNow();
-    // Log the movies to the console
-    print('playing now Movies:');
-    for (var movie in movies) {
-      print('Title: ${movie.title}, Release Date: ${movie.releaseDate}');
-    }
-    setState(() {
-      _movies = movies;  // Update the state with the fetched movies
-      _isLoading = false; // Set loading to false
-    });
-  } catch (e) {
-    setState(() {
-      _error = 'Failed to load trending movies: $e'; // Update error state
-      _isLoading = false; // Set loading to false
-    });
-    print('Error fetching movies: $e'); // Log the error
-  }
-}
-
 
   @override
   Widget build(BuildContext context) {
