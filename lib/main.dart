@@ -1,12 +1,11 @@
-import 'package:filmood/data/core/api_client.dart';
-import 'package:filmood/data/data_sources/movie_remote.dart';
-import 'package:filmood/data/repositories/movie_repository_imp.dart';
+import 'package:filmood/di/get_it.dart';
 import 'package:filmood/domain/entities/movie_entity.dart';
 import 'package:filmood/domain/usecases/get_trending.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
-void main() {
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await init();
   runApp(const MyApp());
 }
 
@@ -42,9 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    final dataSource = MovieRemoteDataSourceImp(ApiClient(Client())); // Initialize the remote data source
-    final movieRepository = MovieRepositoryImp(dataSource); // Initialize the repository
-    _getTrending = GetTrending(movieRepository);
+    _getTrending = getItInstance<GetTrending>();
     _fetchTrendingMovies();//caling the method to fetch the movies
   }
 
