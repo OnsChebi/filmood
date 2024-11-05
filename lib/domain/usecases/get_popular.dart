@@ -1,14 +1,14 @@
 import 'package:filmood/domain/entities/movie_entity.dart';
 import 'package:filmood/domain/repoitories/movie_repository.dart';
 
-class GetPlayNow {
+class GetPopular {
   final MovieRepository  _movieRepository;
 
   //constructor
-  GetPlayNow(this._movieRepository);
+  GetPopular(this._movieRepository);
    
    Future<List<MovieEntity>> call(){
-    return _movieRepository.getPlayNow();
+    return _movieRepository.getPopular();
    }
 
 }
